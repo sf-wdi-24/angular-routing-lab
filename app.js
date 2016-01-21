@@ -1,4 +1,4 @@
-var app = angular.module('libraryApp', []);
+var app = angular.module('libraryApp', ['ngRoute']);
 
 ////////////
 // ROUTES //
@@ -7,7 +7,19 @@ var app = angular.module('libraryApp', []);
 app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider)  {
   $routeProvider
     .when('/', {
-      template: 'Home!'
+      templateUrl: 'templates/books/index.html',
+      controller: 'BooksIndexCtrl'
+    })
+
+    .when('/books/:id', {
+      templateUrl: 'templates/books/show.html',
+      controller: 'BooksShowCtrl'
+    });
+
+    $locationProvider
+    .html5Mode({
+      enabled: true,
+      requireBase: false
     });
 }]);
 
@@ -15,10 +27,14 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
 // CONTROLLERS //
 /////////////////
 
-app.controller('BooksIndexCtrl', ['$scope', function ($scope) {
-  $scope.booksIndexTest = 'Connected to BooksIndexCtrl';
-}]);
 
-app.controller('BooksShowCtrl', ['$scope', function ($scope) {
-  $scope.booksShowTest = 'Connected to BooksShowCtrl';
+app.controller('BooksShowCtrl', ['$scope', '$routeParams', function ($scope, $routeParams) {
+  $scope.books = allBooks;
+  var bookId = $routeParams.id;
+      var foundBooks = $filter('filter')(allBooks, { _id: bookId }, true);
+    if (foundBooks.length > 0) {
+      $scope.book = foundBooks[0];
+    } else {
+      $location.path('/');
+    }
 }]);

@@ -1,2 +1,15 @@
-<h1>Welcome to the Books Index Page!</h1>
-<h2>{{booksIndexTest}}</h2>
+<h2>Library Books</h2>
+<div ng-repeat="book in books">
+  <hr>
+  <div class="row">
+    <div class="col-md-4">
+      <img ng-src="{{book.image}}" class="img-responsive">
+    </div>
+    <div class="col-md-8">
+      <h5><a ng-href="/books/{{book._id}}">{{book.title}}</a></h5>
+      <br>
+      <p class="small">Written by {{book.author}}</p>
+      <p class="small">Released {{book.releaseDate}}</p>
+    </div>
+  </div>
+</div>
